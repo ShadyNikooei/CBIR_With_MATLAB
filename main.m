@@ -1,0 +1,39 @@
+% shady nikooei
+
+function main
+% in main test CBIR System(tatol work run in this script): extract features and find top 3 similar images
+    clear
+    clc
+    
+    dataset_folder = "E:\shady\term6\Image Process\06_Nikooei_WB_2_403\ex47\archive(2)\dataset\test_set";
+    query_folder = "E:\shady\term6\Image Process\06_Nikooei_WB_2_403\ex47\archive(2)\dataset";
+    
+
+
+    % call CBIR_dataBase for extract features from images of dataSet
+    [features_DS , size] = CBIR_dataBase(dataset_folder);
+    
+    % call CBIR_Query for extraction features from query image
+    features_Q = CBIR_Query(query_folder);
+    
+    % Preallocate array for distances
+    distances = zeros(1, size);
+
+    % finding the most similar image to a query
+    for i=1:size
+        distances(i) = norm(features_Q - features_DS(i).features);
+    end
+     % Sort distances for get the top 5 most similar images
+    [~, sortedIdx] = sort(distances);
+    top5Idx = sortedIdx(1:5);
+
+    % Display the top 5 similar images
+    for j = 1:3
+        figure
+        imshow(features_DS(top5Idx(j)).name);
+        title(['Rank ' num2str(j)]);
+    end
+
+   
+
+    
