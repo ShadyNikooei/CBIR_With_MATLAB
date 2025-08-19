@@ -1,16 +1,17 @@
+% sahdy nikooei
+
 function [feature_q] = CBIR_Query (qury_folder)
 % this a function can extract features of query image
 % input is the directory address from query
 % output is a feature vector
-    clear 
-    clc
-    
-    query_folder = qury_folder;
-    imageFile = dir(fullfile(d_folder,'*.jpg')); % sort file in folder
+  
+    imageFile = dir(fullfile(qury_folder,'*.jpg')); % sort file in folder
+
+
     % preallocation (zero matrix) for save features
-    features = zeros(7,16);
+    features = zeros(9,16);
     
-    img = imread(fullfile(query_folder));
+    img = imread(fullfile(qury_folder, imageFile.name));
     img = rgb2gray(img);
     
     % divide image to 16 parts for compute features 
@@ -39,6 +40,13 @@ function [feature_q] = CBIR_Query (qury_folder)
            features(4,part_num) = max(part_img(:)); % maxIntensity -> row:4
            features(5,part_num) = sum(part_img(:)); % area -> row:5
            
+
+           % entropy (normalize block to [0,1])
+           features(6,part_num) = entropy(mat2gray(part_img)); % entropy -> row:6
+           
+           % energy: sum of squares of intensities
+           features(7,part_num) = sum(double(part_img(:)).^2); % energy -> row:7
+
            % morphological operations
            part_img = imbinarize(part_img);
            part_img = ~part_img;
@@ -57,15 +65,10 @@ function [feature_q] = CBIR_Query (qury_folder)
                x = 0;
                y = 0;
            end
-           features(6,part_num) = x; % Centroid X
-           features(7,part_num) = y; % Centroid Y;
+           features(8,part_num) = x; % Centroid X -> row:8
+           features(9,part_num) = y; % Centroid Y -> row:9
        end
     end
 
     feature_q = features;
-
-
-
-
-
 

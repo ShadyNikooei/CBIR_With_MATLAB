@@ -1,0 +1,79 @@
+% sahdy nikooei
+
+function [feature_q] = CBIR_Query (qury_folder)
+% this a function can extract features of query image
+% input is the directory address from query
+% output is a feature vector
+  
+    imageFile = dir(fullfile(qury_folder,'*.jpg')); % sort file in folder
+
+
+    % preallocation (zero matrix) for save features
+    features = zeros(9,16);
+    
+    img = imread(fullfile(qury_folder, imageFile.name));
+    img = rgb2gray(img);
+    
+    % divide image to 16 parts for compute features 
+    [rows, colns, ~] = size(img);
+    block_rows = floor(rows/4);
+    block_colns = floor(colns/4);
+    
+    for i=0:3
+       for j=0:3
+    
+           % set block of each part
+           start_row = i*block_rows+1;
+           stop_row = (i+1)*block_rows;
+           start_cln = j*block_colns+1;
+           stop_cln = (j+1)*block_colns;
+    
+           part_img = img(start_row:stop_row,start_cln:stop_cln);
+           
+           % find column
+           part_num = i*4 + j + 1;
+           
+           % extract features
+           features(1,part_num) = mean2(part_img); % mean2 -> row:1
+           features(2,part_num)= std2(part_img);  % std2 -> row:2
+           features(3,part_num) = min(part_img(:)); % minIntensity -> row:3
+           features(4,part_num) = max(part_img(:)); % maxIntensity -> row:4
+           features(5,part_num) = sum(part_img(:)); % area -> row:5
+           
+
+           % entropy (normalize block to [0,1])
+           features(6,part_num) = entropy(mat2gray(part_img)); % entropy -> row:6
+           
+           % energy: sum of squares of intensities
+           features(7,part_num) = sum(double(part_img(:)).^2); % energy -> row:7
+
+           % morphological operations
+           part_img = imbinarize(part_img);
+           part_img = ~part_img;
+           part_img = imfill(part_img,"holes");
+           part_img = bwareaopen(part_img,10);
+           se = strel('disk', 10);
+           part_img = imclose(part_img,se);
+           
+            % Region properties: centroid
+           states = regionprops(part_img,'Centroid');
+           if ~isempty(states)
+               allCentroids = cat(1, states.Centroid); % Collect all centroids
+               x = mean(allCentroids(:,1));            % Average X of all found centers 
+               y = mean(allCentroids(:,2));            % Average Y of all found centers
+           else
+               x = 0;
+               y = 0;
+           end
+           features(8,part_num) = x; % Centroid X -> row:8
+           features(9,part_num) = y; % Centroid Y -> row:9
+       end
+    end
+
+    feature_q = features;
+
+
+
+
+
+
