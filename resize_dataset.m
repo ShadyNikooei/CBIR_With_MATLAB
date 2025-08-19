@@ -3,7 +3,7 @@ function resize_dataset(input_folder, output_folder, target_size)
 %
 % input_folder: path to original dataset
 % output_folder: path to save resized images
-% target_size: desired output size (e.g., [256 256])
+% target_size: desired output size (e.g., [1024 1024])
 
     % Create output folder if it doesn't exist
     if ~exist(output_folder, 'dir')
