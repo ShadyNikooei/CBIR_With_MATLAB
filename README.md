@@ -18,38 +18,13 @@ The system extracts features from images, compares them to a query image, and re
 - Divides each image into 16 equal blocks and extracts features per block.  
 - Computes similarity between query and dataset images using **Euclidean distance** via `pdist2`.  
 - Includes a separate MATLAB script to **resize dataset and query images** before feature extraction.  
-- Returns and displays the Top-3 most similar images to the query.  
-
----
-
-## Project Structure
-```
-CBIR_Project/
-  main.m              # Main script (runs the whole CBIR system)
-  CBIR_dataBase.m     # Extracts and stores features from dataset images
-  CBIR_Query.m        # Extracts features from query image
-  resize_dataset.m    # Script/function for resizing images
-  README.md           # Project description
-```
+- Returns and displays the Top-3 most similar images to the query.
 
 ---
 
 ## Dataset
 This project uses the **Corel Image Dataset** available on Kaggle:  
-[Download dataset](https://www.kaggle.com/datasets/elkamel/corel-images)
-
-Place your dataset inside a folder, for example:
-```
-dataset/
-    test_set/        # images for the database
-    query_set/       # query images
-```
-
-Update the dataset and query folder paths in `main.m`:
-```matlab
-dataset_folder = "path_to_your_dataset/test_set";
-query_folder   = "path_to_your_dataset/query_set";
-```
+[Download dataset](https://www.kaggle.com/datasets/elkamel/corel-images
 
 ---
 
