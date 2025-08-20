@@ -13,9 +13,7 @@ function resize_dataset(input_folder, output_folder, target_size)
     % Get list of all JPG images
     imageFiles = dir(fullfile(input_folder, '*.jpg'));
 
-    % Loop through each image
     for i = 1:length(imageFiles)
-        % Read image
         img = imread(fullfile(input_folder, imageFiles(i).name));
 
         % Resize directly to the target size
