@@ -24,7 +24,7 @@ The system extracts features from images, compares them to a query image, and re
 
 ## Dataset
 This project uses the **Corel Image Dataset** available on Kaggle:  
-[Download dataset](https://www.kaggle.com/datasets/elkamel/corel-images
+[Download dataset](https://www.kaggle.com/datasets/elkamel/corel-images)
 
 ---
 
